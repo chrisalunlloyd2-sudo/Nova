@@ -96,6 +96,9 @@ start application
     }
     $ghPath = "C:\Users\viper\scoop\shims\gh.exe"
 
+    # Add portable git to environment PATH so gh.exe can find it
+    $env:PATH = "C:\Users\viper\git\cmd;" + $env:PATH
+
     Set-Location $folderPath
 
     # Initialize git if it doesn't exist
