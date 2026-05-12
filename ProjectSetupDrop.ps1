@@ -26,19 +26,24 @@ function Process-Folder($folderPath) {
     $label.ForeColor = [System.Drawing.Color]::Yellow
     $form.Refresh()
     
+    # Smart File Listing for README
+    $files = Get-ChildItem -Path $folderPath -File | Select-Object -ExpandProperty Name
+    $fileList = $files -join "`n- "
+
     # 1. README.md
     $readmePath = Join-Path $folderPath "README.md"
-    if (-not (Test-Path $readmePath)) {
 @"
 # $folderName
 
 ## Overview
 A newly initialized project.
 
+## Project Files
+- $fileList
+
 ## Features
-- Update this section with core features.
+- Smart-populated file listing.
 "@ | Out-File $readmePath -Encoding UTF8
-    }
 
     # 2. Blueprint.md
     $blueprintPath = Join-Path $folderPath "Blueprint.md"
