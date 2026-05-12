@@ -10,7 +10,7 @@ $form.FormBorderStyle = "FixedDialog"
 $form.MaximizeBox = $false
 
 $label = New-Object System.Windows.Forms.Label
-$label.Text = "📁 Drop Any Folder Here"
+$label.Text = "[ Drop Any Folder Here ]"
 $label.Font = New-Object System.Drawing.Font("Segoe UI", 18, [System.Drawing.FontStyle]::Bold)
 $label.ForeColor = [System.Drawing.Color]::White
 $label.AutoSize = $false
@@ -29,7 +29,7 @@ function Process-Folder($folderPath) {
     # 1. README.md
     $readmePath = Join-Path $folderPath "README.md"
     if (-not (Test-Path $readmePath)) {
-        @"
+@"
 # $folderName
 
 ## Overview
@@ -43,22 +43,22 @@ A newly initialized project.
     # 2. Blueprint.md
     $blueprintPath = Join-Path $folderPath "Blueprint.md"
     if (-not (Test-Path $blueprintPath)) {
-        @"
+@"
 # Blueprint
 
 ## Architecture
 Describe the core architecture of the project here.
 
 ## File Structure
-- `src/` - Source code
-- `docs/` - Documentation
+- src/ - Source code
+- docs/ - Documentation
 "@ | Out-File $blueprintPath -Encoding UTF8
     }
 
     # 3. CHANGELOG.md
     $changelogPath = Join-Path $folderPath "CHANGELOG.md"
     if (-not (Test-Path $changelogPath)) {
-        @"
+@"
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -71,7 +71,7 @@ All notable changes to this project will be documented in this file.
     # 4. INSTALL.md
     $installPath = Join-Path $folderPath "INSTALL.md"
     if (-not (Test-Path $installPath)) {
-        @"
+@"
 # Installation and Usage
 
 ## Prerequisites
@@ -82,10 +82,7 @@ All notable changes to this project will be documented in this file.
 2. Install dependencies.
 
 ## Running from Command Line
-\`\`\`bash
-# Example command
 start application
-\`\`\`
 "@ | Out-File $installPath -Encoding UTF8
     }
     
@@ -112,15 +109,15 @@ start application
     }
     
     if ($uploaded) {
-        $label.Text = "✅ Success!`nDocs generated & Uploaded!"
+        $label.Text = "Success! Docs & Uploaded!"
         $label.ForeColor = [System.Drawing.Color]::LightGreen
     } else {
-        $label.Text = "✅ Success!`nDocs generated locally."
+        $label.Text = "Success! Docs generated locally."
         $label.ForeColor = [System.Drawing.Color]::LightGreen
     }
     
     Start-Sleep -Seconds 2
-    $label.Text = "📁 Drop Any Folder Here"
+    $label.Text = "[ Drop Any Folder Here ]"
     $label.ForeColor = [System.Drawing.Color]::White
 }
 
