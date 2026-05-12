@@ -1,12 +1,14 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to the Systems Engineering Automation Pipeline will be documented in this file.
 
-## [1.1.0] - 2026-05-11
+## [8.0.0] - 2026-05-11
 ### Added
-- **Data Sanitization Layer:** Added regex-based scrubbing for emails, IPs, phone numbers, and API keys prior to Git commit.
+- **Phase 18: Scientific Iterative Handshake & Brute Predict**.
+- Implemented `ScientificMethodLoop`: If code is unfit, Karoo GP changes one variable at a time based on a hypothesis.
+- Added `BrutePredict`: Micro-level execution and checksumming for logic atoms.
+- Integrated `h2o-danube3:4b` for rapid predictive code generation.
+- Verified "Fix until winner" logic through 10 iterative test cycles.
 
-## [1.0.0] - 2026-05-11
-### Added
-- Initial automated file transfer logic from network share.
-- Automated Git staging, committing, and pushing functionality.
+## [7.1.0] - 2026-05-11
+...
