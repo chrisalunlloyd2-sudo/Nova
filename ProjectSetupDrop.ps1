@@ -86,37 +86,64 @@ start application
 "@ | Out-File $installPath -Encoding UTF8
     }
     
-    # Git Upload Logic
+    # Git & GitHub CLI Upload Logic
     $gitDir = Join-Path $folderPath ".git"
     $uploaded = $false
-    if (Test-Path $gitDir) {
-        $label.Text = "Uploading to Git..."
-        $label.ForeColor = [System.Drawing.Color]::Cyan
-        $form.Refresh()
-        
-        $gitPath = "git"
-        if (Test-Path "C:\Users\viper\git\cmd\git.exe") {
-            $gitPath = "C:\Users\viper\git\cmd\git.exe"
+    
+    $gitPath = "git"
+    if (Test-Path "C:\Users\viper\git\cmd\git.exe") {
+        $gitPath = "C:\Users\viper\git\cmd\git.exe"
+    }
+    $ghPath = "C:\Users\viper\scoop\shims\gh.exe"
+
+    Set-Location $folderPath
+
+    # Initialize git if it doesn't exist
+    if (-not (Test-Path $gitDir)) {
+        & $gitPath init
+    }
+
+    $label.Text = "Committing and Uploading..."
+    $label.ForeColor = [System.Drawing.Color]::Cyan
+    $form.Refresh()
+
+    & $gitPath add .
+    & $gitPath commit -m "Auto-setup: Generated docs and project files"
+
+    # Check if a remote origin exists
+    $remotes = & $gitPath remote
+    if ($remotes -contains "origin") {
+        # Remote exists, just push
+        & $gitPath push origin main
+        if ($LASTEXITCODE -ne 0) {
+            & $gitPath push origin master
         }
-        
-        Set-Location $folderPath
-        & $gitPath add .
-        & $gitPath commit -m "Auto-setup: Generated docs and project files"
-        & $gitPath push origin
-        if ($LASTEXITCODE -eq 0) {
-            $uploaded = $true
+        if ($LASTEXITCODE -eq 0) { $uploaded = $true }
+    } else {
+        # No remote, create a new public repo and push using gh CLI
+        if (Test-Path $ghPath) {
+            $label.Text = "Creating Public GitHub Repo..."
+            $form.Refresh()
+            
+            # Using GitHub CLI to create repo
+            & $ghPath repo create "$folderName" --public --source=. --remote=origin --push
+            if ($LASTEXITCODE -eq 0) { $uploaded = $true }
+        } else {
+            $label.Text = "GitHub CLI not found."
+            $label.ForeColor = [System.Drawing.Color]::Orange
+            Start-Sleep -Seconds 2
         }
     }
     
     if ($uploaded) {
-        $label.Text = "Success! Docs & Uploaded!"
+        $label.Text = "Success! Docs & Repo Uploaded!"
         $label.ForeColor = [System.Drawing.Color]::LightGreen
     } else {
-        $label.Text = "Success! Docs generated locally."
-        $label.ForeColor = [System.Drawing.Color]::LightGreen
+        $label.Text = "Completed! (Locally only or Git failed)"
+        $label.ForeColor = [System.Drawing.Color]::Orange
     }
     
-    Start-Sleep -Seconds 2
+    Start-Sleep -Seconds 3
     $label.Text = "[ Drop Any Folder Here ]"
     $label.ForeColor = [System.Drawing.Color]::White
 }
