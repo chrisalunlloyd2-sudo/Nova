@@ -2,15 +2,15 @@ Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "Project Auto-Setup & Uploader"
+$form.Text = "Project Auto-Setup & Rolling Uploader"
 $form.Size = New-Object System.Drawing.Size(450, 250)
 $form.StartPosition = "CenterScreen"
 $form.BackColor = [System.Drawing.Color]::FromArgb(32, 34, 37)
 $form.FormBorderStyle = "FixedDialog"
-$form.MaximizeBox = $false
+$form.TopMost = $true
 
 $label = New-Object System.Windows.Forms.Label
-$label.Text = "[ Drop Any Folder Here ]"
+$label.Text = "[ DROP FOLDER HERE ]"
 $label.Font = New-Object System.Drawing.Font("Segoe UI", 18, [System.Drawing.FontStyle]::Bold)
 $label.ForeColor = [System.Drawing.Color]::White
 $label.AutoSize = $false
@@ -20,140 +20,97 @@ $form.Controls.Add($label)
 
 $form.AllowDrop = $true
 
+$gitPath = "C:\Users\viper\git\cmd\git.exe"
+$ghPath = "C:\Users\viper\scoop\shims\gh.exe"
+$env:PATH = "C:\Users\viper\git\cmd;" + $env:PATH
+
+function Log-Step($msg, $color = "White") {
+    Write-Host "[STEP] $msg" -ForegroundColor $color
+}
+
 function Process-Folder($folderPath) {
     $folderName = Split-Path $folderPath -Leaf
-    $label.Text = "Configuring $folderName..."
+    Log-Step "Starting Rolling Upload for: $folderName" "Cyan"
+    
+    $label.Text = "Processing: $folderName"
     $label.ForeColor = [System.Drawing.Color]::Yellow
     $form.Refresh()
-    
-    # Smart File Listing for README
-    $files = Get-ChildItem -Path $folderPath -File | Select-Object -ExpandProperty Name
-    $fileList = $files -join "`n- "
 
-    # 1. README.md
+    Set-Location $folderPath
+    Log-Step "Changed directory to $folderPath"
+    
+    # 1. Generate Smart README
+    Log-Step "Scanning files for Smart README..."
+    $files = Get-ChildItem -Path $folderPath -File | Where-Object { $_.Name -notmatch "README|Blueprint|CHANGELOG|INSTALL" }
+    $fileList = if ($files) { ($files | Select-Object -ExpandProperty Name) -join "`n- " } else { "No additional files found." }
+    
     $readmePath = Join-Path $folderPath "README.md"
+    Log-Step "Writing README.md..."
 @"
 # $folderName
 
 ## Overview
-A newly initialized project.
+Automated project bootstrap.
 
 ## Project Files
 - $fileList
 
-## Features
-- Smart-populated file listing.
+## Auto-Generated Features
+- Recursive Documentation
+- Public GitHub Deployment
 "@ | Out-File $readmePath -Encoding UTF8
 
-    # 2. Blueprint.md
-    $blueprintPath = Join-Path $folderPath "Blueprint.md"
-    if (-not (Test-Path $blueprintPath)) {
-@"
-# Blueprint
-
-## Architecture
-Describe the core architecture of the project here.
-
-## File Structure
-- src/ - Source code
-- docs/ - Documentation
-"@ | Out-File $blueprintPath -Encoding UTF8
+    # 2. Generate other docs if missing
+    Log-Step "Checking for secondary documentation..."
+    @("Blueprint.md", "CHANGELOG.md", "INSTALL.md") | ForEach-Object {
+        $path = Join-Path $folderPath $_
+        if (-not (Test-Path $path)) {
+            Log-Step "Generating $_..."
+            "# $_ Placeholder" | Out-File $path -Encoding UTF8
+        }
     }
 
-    # 3. CHANGELOG.md
-    $changelogPath = Join-Path $folderPath "CHANGELOG.md"
-    if (-not (Test-Path $changelogPath)) {
-@"
-# Changelog
-
-All notable changes to this project will be documented in this file.
-
-## [Unreleased]
-- Initial auto-generated project structure.
-"@ | Out-File $changelogPath -Encoding UTF8
-    }
-
-    # 4. INSTALL.md
-    $installPath = Join-Path $folderPath "INSTALL.md"
-    if (-not (Test-Path $installPath)) {
-@"
-# Installation and Usage
-
-## Prerequisites
-- List any dependencies here.
-
-## Step-by-Step Installation
-1. Clone the repository.
-2. Install dependencies.
-
-## Running from Command Line
-start application
-"@ | Out-File $installPath -Encoding UTF8
-    }
-    
-    # Git & GitHub CLI Upload Logic
-    $gitDir = Join-Path $folderPath ".git"
-    $uploaded = $false
-    
-    $gitPath = "git"
-    if (Test-Path "C:\Users\viper\git\cmd\git.exe") {
-        $gitPath = "C:\Users\viper\git\cmd\git.exe"
-    }
-    $ghPath = "C:\Users\viper\scoop\shims\gh.exe"
-
-    # Add portable git to environment PATH so gh.exe can find it
-    $env:PATH = "C:\Users\viper\git\cmd;" + $env:PATH
-
-    Set-Location $folderPath
-
-    # Initialize git if it doesn't exist
-    if (-not (Test-Path $gitDir)) {
+    # 3. Git Logic
+    if (-not (Test-Path (Join-Path $folderPath ".git"))) {
+        Log-Step "Initializing Git..." "Yellow"
         & $gitPath init
     }
 
-    $label.Text = "Committing and Uploading..."
-    $label.ForeColor = [System.Drawing.Color]::Cyan
-    $form.Refresh()
-
+    Log-Step "Staging files..."
     & $gitPath add .
-    & $gitPath commit -m "Auto-setup: Generated docs and project files"
-
-    # Check if a remote origin exists
+    
+    Log-Step "Committing changes..."
+    & $gitPath commit -m "Rolling Auto-Setup: Project documents and files"
+    
+    # 4. Upload Logic
     $remotes = & $gitPath remote
     if ($remotes -contains "origin") {
-        # Remote exists, just push
+        Log-Step "Existing remote found. Pushing..." "Cyan"
         & $gitPath push origin main
-        if ($LASTEXITCODE -ne 0) {
-            & $gitPath push origin master
-        }
-        if ($LASTEXITCODE -eq 0) { $uploaded = $true }
+        if ($LASTEXITCODE -ne 0) { & $gitPath push origin master }
     } else {
-        # No remote, create a new public repo and push using gh CLI
+        Log-Step "No remote found. Creating Public Repo via GitHub CLI..." "Magenta"
         if (Test-Path $ghPath) {
-            $label.Text = "Creating Public GitHub Repo..."
-            $form.Refresh()
-            
-            # Using GitHub CLI to create repo
             & $ghPath repo create "$folderName" --public --source=. --remote=origin --push
-            if ($LASTEXITCODE -eq 0) { $uploaded = $true }
         } else {
-            $label.Text = "GitHub CLI not found."
-            $label.ForeColor = [System.Drawing.Color]::Orange
-            Start-Sleep -Seconds 2
+            Log-Step "ERROR: GitHub CLI (gh.exe) not found at $ghPath" "Red"
         }
     }
-    
-    if ($uploaded) {
-        $label.Text = "Success! Docs & Repo Uploaded!"
+
+    if ($LASTEXITCODE -eq 0) {
+        Log-Step "SUCCESS: $folderName is live on GitHub!" "Green"
+        $label.Text = "✅ SUCCESS!"
         $label.ForeColor = [System.Drawing.Color]::LightGreen
     } else {
-        $label.Text = "Completed! (Locally only or Git failed)"
-        $label.ForeColor = [System.Drawing.Color]::Orange
+        Log-Step "FAILURE: Could not complete upload for $folderName" "Red"
+        $label.Text = "❌ FAILED"
+        $label.ForeColor = [System.Drawing.Color]::Red
     }
-    
+
     Start-Sleep -Seconds 3
-    $label.Text = "[ Drop Any Folder Here ]"
+    $label.Text = "[ DROP FOLDER HERE ]"
     $label.ForeColor = [System.Drawing.Color]::White
+    $form.Refresh()
 }
 
 $form.Add_DragEnter({
@@ -171,4 +128,5 @@ $form.Add_DragDrop({
     }
 })
 
+Log-Step "GUI Ready. Waiting for drag-and-drop..." "Green"
 [void]$form.ShowDialog()
