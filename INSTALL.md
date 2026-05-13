@@ -1,22 +1,27 @@
-# Installation and Usage
+# Installation & Setup Guide
 
-## Prerequisites
-- Python 3.x (Portable or System-installed)
-- Git (Portable or System-installed)
-- A configured Git repository with an active remote.
+## Requirements
+- **Ollama:** Must be installed and running locally.
+- **Git:** Installed and configured in the system PATH.
+- **GitHub CLI (gh):** Authenticated for automated repo creation.
+- **Node.js:** (Optional) Required if using the `karoo_bridge.js` for advanced mutation analysis.
 
-## Step-by-Step Installation
-1. **Clone the Repository:** Ensure the script is placed within an initialized Git repository.
-2. **Configure Paths:** Open `auto_port.py` and ensure `SOURCE_PATH` and `DEST_PATH` correctly point to your network share and local repository.
-3. **Configure Git Executable:** If using portable Git, ensure the `subprocess.run` calls point to your specific `git.exe` path.
+## Setup Steps
+1. **Model Pull:**
+   Ensure the target model is available in Ollama:
+   ```powershell
+   ollama pull qwen2.5:0.5b
+   ```
+2. **Path Configuration:**
+   The executable expects `git` and `gh` to be accessible. If using the source code, ensure Python 3.11+ is installed.
 
-## Running from Command Line
-To run the autoloader manually, simply execute:
-`python auto_port.py`
+3. **Running the Engine:**
+   Run the standalone executable from any directory:
+   ```powershell
+   ./darwin_cli.exe --target "C:\Path\To\Output" --intent "Your Intent Here"
+   ```
 
-To run continuously, schedule it via **Windows Task Scheduler**:
-1. Open Task Scheduler -> Create Basic Task.
-2. Trigger: "Daily" or "Hourly".
-3. Action: "Start a program".
-4. Program/script: `python`
-5. Add arguments: `C:\AutomationProject\auto_port.py`
+## Troubleshooting
+- **Empty Files:** Check if the Ollama server is active. The engine now features an auto-detection check but requires the server to be listening on `http://localhost:11434`.
+- **Deployment Failures:** Ensure you are logged into the GitHub CLI (`gh auth login`).
+- **AST Parsing Errors:** The engine will automatically trigger up to 3 "Step-Up" re-injection loops to fix syntax errors. If it still fails, check the `NOTES.md` in the target folder for the error logs.

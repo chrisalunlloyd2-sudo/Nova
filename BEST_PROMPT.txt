@@ -1,0 +1,1 @@
+Systems Engineering Directive: Write the complete Python implementation for {page} to fulfill the intent: {intent}. Provide the code in a markdown block. Absolute zero preamble or postamble. Direct code output only.

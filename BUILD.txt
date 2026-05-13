@@ -1,5 +1,49 @@
 # Build Log
 
+## Phase 25: Executable Packaging
+- `Create darwin_cli.py` with `argparse` to expose generation parameters.
+- `Refactor DarwinianEngine_v8.py` to use `os.getcwd()` for portable execution.
+- `Run PyInstaller` with `--onefile` to compile `darwin_cli.exe`.
+- `Verify executable` CLI parameters and help output.
+
+## Phase 24: Prompt Genetics
+- `Create prompt_evolver.py` with tournament selection logic.
+- `Run evolution loop` generating 10 variations of the system prompt.
+- `Measure fitness` using AST validity and conversational silence benchmarks.
+- `Update DarwinianEngine_v8.py` to use `BEST_PROMPT.txt` dynamically.
+
+## Phase 23: Multi-Page Documentation Test
+- `Update DarwinianEngine_v8.py` to properly extract `.md` code blocks.
+- `Refactor get_program_out` to prevent pipeline termination on single-file failures.
+- `Create test_multipage_e2e.py` to test 7-file generation and deployment.
+- `Run E2E test` to verify resilient markdown parsing and GitHub deployment.
+
+## Phase 22: GitHub Deployment Integration
+- `Update DarwinianEngine_v8.py` with `deploy` method logic.
+- `Integrate deploy()` call to the end of `get_program_out()`.
+- `Create test_e2e_deploy.py` for randomized script generation and deployment.
+- `Run E2E deployment` testing generation, mutation, re-injection, and git-push pipeline.
+
+## Phase 21: Re-Injection & Test Loops
+- `Update DarwinianEngine_v8.py` with multi-language parsing (HTML/CSS/JS).
+- `Upgrade is_page_complete` to use regex for detecting `# ...` and `TODO` lazy placeholders.
+- `Implement Step-Up loop` allowing up to 3 re-injection attempts.
+- `Create test_cat_webpage.py` and successfully generated a multi-page cat site.
+- `Create test_flappy_bird.py` to trigger and verify the Re-Injection failure states on complex codebases.
+
+## Phase 20: Boolean Logic & Cloud Fallback
+- `Update DarwinianEngine_v8.py` with `is_page_complete` method.
+- `Refactor run_scientific_evolution` to include boolean completeness check.
+- `Implement CLOUD fallback logging` for failed evolution cycles.
+- `Verify AST-based verification` in the final generation step.
+- `Deploy full fixed code` for `main.py` and `logic_engine.py` via manual intervention.
+
+## Phase 19: Operational Mandates
+- `Create C:\Users\viper\Desktop\AutomationProject\GEMINI.md` with new development lifecycle rules.
+- `Update CHANGELOG.md` with Phase 19 details.
+- `Update BUILD.txt` with Phase 19 commands.
+- `Update NOTES.md` with Phase 19 strategy and feedback loop instructions.
+
 ## Phase 18: Scientific Iterative Handshake
 - `Update C:\Users\viper\SystemsPipeline\pipeline.py` with `ScientificMethodLoop` and `BrutePredict`.
 - `Implement iterative variable mutation` via `karoo_bridge.js`.
