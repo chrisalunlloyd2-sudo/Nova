@@ -1,35 +1,178 @@
-# Darwinian Evolutionary Engine v26.0
+# Nova
 
-## Overview
-The Darwinian Evolutionary Engine is a 100-step autonomous software factory designed to generate, test, and deploy production-ready codebases with zero human intervention. It leverages a "Scientific Method" iterative loop to self-correct logic, uses genetic algorithms to evolve its own system prompts, and features a robust re-injection cycle to overcome LLM context limitations.
+> Nova — part of the Viper RAID-0 workstation system.
 
-## Core Features
-- **Scientific Method Loop:** Formulates hypotheses to fix code failures by changing one variable at a time.
-- **Prompt Genetics:** Darwinistically evolves its own system prompts to maximize "Performative" code output.
-- **Re-Injection Step-Up:** Detects incomplete code or lazy placeholders (e.g., `# ...`) and forces a full rewrite.
-- **Boolean Logic Verification:** Uses AST parsing and structural checks to ensure every "page" is complete before shipping.
-- **Automated Deployment:** Automatically initializes Git, creates public GitHub repositories via the `gh` CLI, and force-pushes the verified code.
+*Auto-generated 2026-06-20 08:10 from source — branch `main`, 15 Python modules, 24 other files.*
 
-## Quick Start
-The system is distributed as a standalone executable: `darwin_cli.exe`.
+## Architecture
 
-```powershell
-./darwin_cli.exe --target "MyProject" --intent "A full flappy bird clone in pygame" --topology main.py README.md
+```
+  .director_payload.md
+  .gitignore
+  BEST_PROMPT.txt
+  BUILD.txt
+  Blueprint.md
+  CHANGELOG.md
+  DRAG_FOLDER_HERE_v2.bat
+  DarwinEngine_Core.py
+  DarwinianEngine_v2.py
+  DarwinianEngine_v8.py
+  GEMINI.md
+  INSTALL.md
+  CatWebpageTest/
+    index.html
+    script.js
+    style.css
+  E2E_Test_Deploy_6172/
+  MultiPage_E2E_20010/
+  openrouter_manager/
+    CHANGELOG.md
+    README.md
+    ROADMAP.md
 ```
 
-## AI Hooks
-The CLI is designed to be called by other agents:
-- `--target`: Path to the output directory.
-- `--intent`: Natural language description of the goal.
-- `--topology`: List of specific files to generate.
-- `--model`: (Optional) Specify the Ollama model (Default: qwen2.5:0.5b).
+## Dependencies
 
-## Repository Contents
-- `DarwinianEngine_v8.py`: The core evolutionary logic engine.
-- `darwin_cli.py`: The CLI wrapper for the executable.
-- `prompt_evolver.py`: The genetic prompt optimizer.
-- `GEMINI.md`: Project operational mandates and rules of engagement.
-- `CodeLedger.db`: SQLite database for checksummed and verified code atoms.
+External packages imported by this project:
+
+`pipeline`, `requests`, `webbrowser`, `yaml`
+
+## How to run
+
+Executable entry points (have a `__main__` block):
+
+- `python DarwinEngine_Core.py`
+- `python DarwinianEngine_v2.py`
+- `python DarwinianEngine_v8.py`
+- `python auto_port.py`
+- `python darwin_cli.py`
+- `python main.py`
+- `python pipeline_final.py`
+- `python pipeline_v9.py`
+- `python prompt_evolver.py`
+- `python rolling_core_wrapper.py`
+- `python test_cat_webpage.py`
+- `python test_e2e_deploy.py`
+
+## Modules
+
+### `DarwinEngine_Core.py`
+
+- **class `DarwinianEngine`**
+  - methods: `log`, `calculate_project_hash`, `red_team_audit`, `generate_build_certificate`, `run_final_handover`
+
+### `DarwinianEngine_v2.py`
+
+- **class `CodeLedger`**
+  - methods: `_init_ledger`, `commit_to_ledger`
+- **class `RaceAnalytic`**
+  - methods: `analyze_concurrency`
+- **class `DarwinBridge`**
+  - methods: `evaluate`
+- **class `SystemsPipelineEngine`**
+  - methods: `log`, `ping_llm`, `push_to_github`, `run_evolution_loop`
+
+### `DarwinianEngine_v8.py`
+
+- **class `CodeLedger`**
+  - methods: `_init_ledger`, `commit_to_ledger`
+- **class `DarwinBridge`**
+  - methods: `evaluate`, `mutate_scientific`
+- **class `SystemsPipelineEngine`**
+  - methods: `get_best_prompt`, `log`, `run_fitness_test`, `ping_llm`, `extract_code`, `is_page_complete`, `run_scientific_evolution`, `deploy`, `get_program_out`
+
+### `auto_port.py`
+
+- `transfer_file()`
+- `sanitize_file(file_path)`
+- `git_push()`
+
+### `darwin_cli.py`
+
+- `main()`
+
+### `logic_engine.py`
+
+- **class `RecursiveSolver`**
+  - methods: `solve`, `verify`, `self_correct`
+
+### `main.py`
+
+- `main()`
+
+### `pipeline_final.py`
+
+- **class `SystemsPipeline`**
+  - methods: `_init_db`, `_load_config`, `log_event`, `sync_environment`, `map_dependencies`, `read_file_safe`, `scrub_file`, `purge_logs`, `run_scrub_pipeline`
+
+### `pipeline_v9.py`
+
+- **class `CodeLedger`**
+  - methods: `_init_ledger`, `commit_to_ledger`
+- **class `DarwinBridge`**
+  - methods: `evaluate`, `mutate_scientific`
+- **class `RaceAnalytic`**
+  - methods: `analyze_concurrency`
+- **class `SystemsPipelineEngine`**
+  - methods: `log`, `ping_llm`, `extract_code`, `generate_topology`, `run_evolution_loop`, `generate_documentation`, `ship_to_github`, `launch_end_to_end`
+
+### `prompt_evolver.py`
+
+- **class `PromptEvolver`**
+  - methods: `log`, `ping_llm`, `mutate_prompt`, `measure_fitness`, `evolve`
+
+### `rolling_core_wrapper.py`
+
+- `main()`
+
+### `test_cat_webpage.py`
+
+- `test_cat_webpage()`
+
+### `test_e2e_deploy.py`
+
+- `test_randomized_e2e()`
+
+### `test_flappy_bird.py`
+
+- `test_flappy_bird()`
+
+### `test_multipage_e2e.py`
+
+- `test_multipage_e2e()`
+
+## Public API index
+
+| Module | Function | Signature |
+|--------|----------|-----------|
+| `auto_port` | `git_push` | `git_push()` |
+| `auto_port` | `sanitize_file` | `sanitize_file(file_path)` |
+| `auto_port` | `transfer_file` | `transfer_file()` |
+| `darwin_cli` | `main` | `main()` |
+| `main` | `main` | `main()` |
+| `rolling_core_wrapper` | `main` | `main()` |
+| `test_cat_webpage` | `test_cat_webpage` | `test_cat_webpage()` |
+| `test_e2e_deploy` | `test_randomized_e2e` | `test_randomized_e2e()` |
+| `test_flappy_bird` | `test_flappy_bird` | `test_flappy_bird()` |
+| `test_multipage_e2e` | `test_multipage_e2e` | `test_multipage_e2e()` |
+
+## Status
+
+- Branch: `main`
+- Last commit: 2026-06-19 20:57:18 -0600
+- File types: .md ×13, .ps1 ×3, .txt ×2, .spec ×1, .bat ×1, .json ×1, .html ×1, .js ×1
+
+### Recent commits
+```
+2cd6385 [Moe autonomous] Nova 2026-06-19 20:57
+f5b96bc Enterprise: Automated Project Sync
+7f275ac Initial commit
+fce5ab2 System v26.0: Final Documentation & Executable Shipment
+002e53b FINAL POLISH: v10.1 Master Engine + SYSTEM BIBLE
+16dfaed LUNAR LANDING: Final v10.0 Project Foundry Baseline
+f040cc0 Auto-setup: Generated docs and project files
+2fed092 Rolling Auto-Setup: Project documents and files
+```
 
 ---
-*MISSION STATUS: SHIPPED v26.0*
+*README generated by `readme_generator.py` (Viper). Deterministic — derived from source, not LLM prose.*
