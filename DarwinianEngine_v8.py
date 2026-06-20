@@ -53,7 +53,7 @@ class DarwinBridge:
         env = os.environ.copy()
         env["NODE_PATH"] = self.node_modules
         try:
-            res = subprocess.run(["node", self.bridge_path, "evaluate", str(code_path)], 
+            res = subprocess.run(["node", self.bridge_path, "evaluate", str(code_path)],
                                  env=env, capture_output=True, text=True)
             if res.returncode == 0:
                 return json.loads(res.stdout).get("fitness", 0)
@@ -65,7 +65,7 @@ class DarwinBridge:
         env = os.environ.copy()
         env["NODE_PATH"] = self.node_modules
         try:
-            res = subprocess.run(["node", self.bridge_path, "mutate", str(code_path)], 
+            res = subprocess.run(["node", self.bridge_path, "mutate", str(code_path)],
                                  env=env, capture_output=True, text=True)
             if res.returncode == 0:
                 data = json.loads(res.stdout)
@@ -76,12 +76,12 @@ class DarwinBridge:
 class SystemsPipelineEngine:
     def __init__(self, model="qwen2.5:0.5b"):
         self.model = model
-        
+
         # Portable paths based on current working directory
         self.base_dir = os.getcwd()
         self.build_lab = Path(os.path.join(self.base_dir, "build_lab"))
         self.build_lab.mkdir(exist_ok=True)
-        
+
         self.db_path = os.path.join(self.base_dir, "CodeLedger.db")
         self.ledger = CodeLedger(self.db_path)
         self.darwin = DarwinBridge()
@@ -111,7 +111,7 @@ class SystemsPipelineEngine:
             temp_file = self.build_lab / "predict_test.py"
             with open(temp_file, "w", encoding="utf-8") as f:
                 f.write(code)
-            
+
             # Syntax only execution check
             res = subprocess.run(["python", "-m", "py_compile", str(temp_file)], capture_output=True)
             if res.returncode == 0:
@@ -130,7 +130,7 @@ class SystemsPipelineEngine:
 
     def extract_code(self, text, page_name=""):
         """Phase 18: Enhanced Extraction (Robust markdown handling)"""
-        # If the target is a markdown file, we generally want the raw output, 
+        # If the target is a markdown file, we generally want the raw output,
         # but if it's wrapped in a codeblock, we extract it. Otherwise return raw.
         if page_name.endswith(".md"):
             match = re.search(r'```(?:markdown|md)?\s*(.*?)\s*```', text, re.DOTALL | re.IGNORECASE)
@@ -151,19 +151,19 @@ class SystemsPipelineEngine:
         match = re.search(fr'```(?:{lang})?\s*(.*?)\s*```', text, re.DOTALL | re.IGNORECASE)
         if match:
             return match.group(1).strip()
-        
+
         # Fallback block search
         match = re.search(r'```(?:.*?)\s*(.*?)\s*```', text, re.DOTALL)
         if match:
             return match.group(1).strip()
-        
+
         # If no blocks, try to find lines starting with import or def
         lines = text.splitlines()
         code_lines = []
         for line in lines:
             if line.strip() and not line.strip().startswith(('#', '//', 'Note:', 'Here')):
                 code_lines.append(line)
-        
+
         if code_lines: return "\n".join(code_lines)
         return text.strip()
 
@@ -171,7 +171,7 @@ class SystemsPipelineEngine:
         """Boolean Logic Check: Is the page full and complete?"""
         if not code or len(code.strip()) < 20:
             return False
-            
+
         # Detect LLM "lazy" placeholders
         lazy_patterns = [
             r'#\s*\.\.\.', r'//\s*\.\.\.', r'<!--\s*\.\.\.\s*-->',
@@ -184,7 +184,7 @@ class SystemsPipelineEngine:
             if re.search(pat, code, re.IGNORECASE):
                 self.log(f"Lazy placeholder detected in {page_name}", "INCOMPLETE")
                 return False
-        
+
         if page_name.endswith(".html"):
             return "</html>" in code.lower() and "<body" in code.lower()
         elif page_name.endswith(".py"):
@@ -192,7 +192,7 @@ class SystemsPipelineEngine:
                 ast.parse(code)
                 has_structure = re.search(r'import\s+|def\s+|class\s+', code)
                 return bool(has_structure)
-            except:
+            except Exception:
                 self.log(f"AST parsing failed for {page_name}", "INCOMPLETE")
                 return False
         # For CSS/JS, basic length check and ending character check
@@ -207,34 +207,34 @@ class SystemsPipelineEngine:
             if code.endswith(",") or code.endswith("{"):
                 return False
             return len(code) > 50
-            
+
         return len(code.strip()) > 50
 
     def run_scientific_evolution(self, target_folder, page, intent):
         self.log(f"Initiating Scientific Evolution for: {page}", "DARWIN")
-        
+
         # 1. Initial Generation (Phase 24: Using evolved Apex Prompt)
         apex_prompt = self.get_best_prompt()
         prompt = apex_prompt.format(page=page, intent=intent)
-        
+
         raw_response = self.ping_llm(prompt)
         code = self.extract_code(raw_response, page)
-        
+
         winner = False
         attempts = 0
         fitness_score = 0
-        
+
         while not winner and attempts < 10:
             self.log(f"Iteration {attempts + 1}: Testing Fitness...", "TEST")
-            
+
             # Save candidate for Darwinian evaluation
             page_name = page if not page.endswith(".py") else page[:-3]
             cand_path = self.build_lab / f"candidate_{page_name}.py"
             with open(cand_path, "w", encoding="utf-8") as f:
                 f.write(code)
-            
+
             fit, feedback = self.run_fitness_test(code, page)
-            
+
             if fit:
                 fitness_score = self.darwin.evaluate(cand_path)
                 if fitness_score >= 100 or not page.endswith(".py"): # Non-python gets an automatic pass if stable
@@ -245,7 +245,7 @@ class SystemsPipelineEngine:
                     self.log(f"Low Fitness ({fitness_score}). Initiating Scientific Mutation...", "MUTATE")
             else:
                 self.log(f"Logic Unfit: {feedback[:50]}...", "FIX")
-            
+
             # 2. SCIENTIFIC METHOD FIX (Phase 18)
             new_code, new_fitness, outcome = self.darwin.mutate_scientific(cand_path)
             if new_code and outcome == "HYPOTHESIS_VALIDATED":
@@ -256,7 +256,7 @@ class SystemsPipelineEngine:
                 prompt += f"\nFIX REQUIRED. Error: {feedback}. Previous Logic: {code}"
                 code = self.ping_llm(prompt)
                 code = self.extract_code(code, page)
-            
+
             attempts += 1
             time.sleep(0.5)
 
@@ -264,7 +264,7 @@ class SystemsPipelineEngine:
         if winner and self.is_page_complete(code, page):
             h = self.ledger.commit_to_ledger(code, {"page": page}, fitness_score)
             self.log(f"Checksummed and Ledgered: {h[:16]}...", "LEDGER")
-            
+
             with open(os.path.join(target_folder, page), "w", encoding="utf-8") as f:
                 f.write(code)
             return True
@@ -275,23 +275,23 @@ class SystemsPipelineEngine:
             while re_inject_attempts < 3:
                 re_inject_attempts += 1
                 self.log(f"Re-Injection Loop {re_inject_attempts} for {page}...", "STEP-UP")
-                
-                # Friction Point Fix: Instead of asking to "finish" and passing the whole code, 
+
+                # Friction Point Fix: Instead of asking to "finish" and passing the whole code,
                 # we explicitly forbid placeholders and ask it to write the FULL script.
                 reinjection_prompt = f"CRITICAL DIRECTIVE: You failed to provide the complete code for {page}. You left lazy placeholders or cut off. Project intent: {intent}. Rewrite the ENTIRE file from start to finish. DO NOT USE PLACEHOLDERS like '# ...'. DO NOT truncate. Here was your previous incomplete attempt:\n{code}"
                 re_code_raw = self.ping_llm(reinjection_prompt)
                 new_code = self.extract_code(re_code_raw, page)
-                
+
                 if len(new_code) > 20:
                     code = new_code
-                
+
                 if self.is_page_complete(code, page):
                     self.log(f"Re-Injection Successful on attempt {re_inject_attempts}. Page complete.", "SUCCESS")
                     h = self.ledger.commit_to_ledger(code, {"page": page}, fitness_score)
                     with open(os.path.join(target_folder, page), "w", encoding="utf-8") as f:
                         f.write(code)
                     return True
-                    
+
             self.log(f"Re-Injection Failed after 3 attempts for {page}. Requesting FULL FIXED CODE from Cloud...", "CLOUD")
             return False
 
@@ -299,7 +299,7 @@ class SystemsPipelineEngine:
         # Phase 22: GitHub Deployment Integration
         self.log(f"Commencing Deployment for {target_dir}...", "DEPLOY")
         folder_name = os.path.basename(target_dir).replace(" ", "_")
-        
+
         env = os.environ.copy()
         git_path = r"C:\Users\viper\git\cmd\git.exe"
         gh_exe = r"C:\Users\viper\scoop\apps\gh\current\bin\gh.exe"
@@ -308,7 +308,7 @@ class SystemsPipelineEngine:
         original_cwd = os.getcwd()
         try:
             os.chdir(target_dir)
-            
+
             if not os.path.exists(".git"):
                 subprocess.run([git_path, "init"], check=False)
 
@@ -318,7 +318,7 @@ class SystemsPipelineEngine:
 
             self.log("Checking GitHub repository status...", "GITHUB")
             check = subprocess.run([gh_exe, "repo", "view", folder_name], capture_output=True, env=env)
-            
+
             if check.returncode != 0:
                 self.log(f"Creating new Public Repo: {folder_name}", "GITHUB")
                 subprocess.run([gh_exe, "repo", "create", folder_name, "--public", "--source=.", "--remote=origin", "--push"], env=env)
@@ -334,12 +334,12 @@ class SystemsPipelineEngine:
 
     def get_program_out(self, target_folder, intent, topology=None):
         self.log(f"GOAL: GET PROGRAM OUT - {intent}", "HPC")
-        
+
         if topology is None:
             topology = ["main.py", "logic_engine.py"]
-            
+
         os.makedirs(target_folder, exist_ok=True)
-        
+
         success_count = 0
         for page in topology:
             success = self.run_scientific_evolution(target_folder, page, intent)
@@ -347,12 +347,12 @@ class SystemsPipelineEngine:
                 self.log(f"FAILED TO GET PROGRAM OUT FOR {page}, continuing to next...", "WARNING")
             else:
                 success_count += 1
-        
+
         self.log(f"PROGRAM COMPLETED {success_count}/{len(topology)} PAGES.", "FINISH")
-        
+
         # Phase 22: Integrate deployment logic
         self.deploy(target_folder)
-        
+
         webbrowser.open(f"file:///{target_folder}")
 
 if __name__ == "__main__":

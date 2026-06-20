@@ -66,7 +66,7 @@ class SystemsPipeline:
             try:
                 with open(file_path, 'r', encoding=enc) as f:
                     return f.read(), enc
-            except:
+            except Exception:
                 continue
         return None, None
 
@@ -119,7 +119,7 @@ class SystemsPipeline:
     def ollama_prompt(self, prompt, model="qwen2.5:0.5b"):
         import requests
         try:
-            response = requests.post('http://localhost:11434/api/generate', 
+            response = requests.post('http://localhost:11434/api/generate',
                                     json={'model': model, 'prompt': prompt, 'stream': False})
             return response.json().get('response', '')
         except Exception as e:
@@ -137,7 +137,7 @@ class SystemsPipeline:
         inventory = "\n".join(files[:20])
         prompt = f"Given this file inventory of a project called {folder_name}:\n{inventory}\nWrite a professional 2-sentence overview of the project's purpose."
         overview = self.ollama_prompt(prompt)
-        
+
         readme_content = f"""# {folder_name}
 ## Description
 {overview}
@@ -168,13 +168,13 @@ class SystemsPipeline:
         # Step 76 & 84: Deployment logic
         self.log_event(f"Commencing Deployment for {target_dir}...")
         folder_name = os.path.basename(target_dir).replace(" ", "_")
-        
+
         env = os.environ.copy()
         env["PATH"] = r"C:\Users\viper\git\cmd;" + env["PATH"]
         gh_exe = r"C:\Users\viper\scoop\apps\gh\current\bin\gh.exe"
 
         os.chdir(target_dir)
-        
+
         # Ensure Git Init (Step 4)
         if not os.path.exists(".git"):
             subprocess.run([GIT_PATH, "init"], check=False)
@@ -187,7 +187,7 @@ class SystemsPipeline:
         # GitHub Repo Creation (Step 77)
         self.log_event("Checking GitHub repository status...")
         check = subprocess.run([gh_exe, "repo", "view", folder_name], capture_output=True, env=env)
-        
+
         if check.returncode != 0:
             self.log_event(f"Creating new Public Repo: {folder_name}")
             subprocess.run([gh_exe, "repo", "create", folder_name, "--public", "--source=.", "--remote=origin", "--push"], env=env)

@@ -53,7 +53,7 @@ class DarwinBridge:
         env = os.environ.copy()
         env["NODE_PATH"] = self.node_modules
         try:
-            res = subprocess.run(["node", self.bridge_path, "evaluate", str(code_path)], 
+            res = subprocess.run(["node", self.bridge_path, "evaluate", str(code_path)],
                                  env=env, capture_output=True, text=True)
             if res.returncode == 0:
                 return json.loads(res.stdout).get("fitness", 0)
@@ -64,7 +64,7 @@ class DarwinBridge:
         env = os.environ.copy()
         env["NODE_PATH"] = self.node_modules
         try:
-            res = subprocess.run(["node", self.bridge_path, "mutate", str(code_path)], 
+            res = subprocess.run(["node", self.bridge_path, "mutate", str(code_path)],
                                  env=env, capture_output=True, text=True)
             if res.returncode == 0:
                 data = json.loads(res.stdout)
@@ -92,7 +92,7 @@ class RaceAnalytic:
                     if 'Thread' in ast.dump(node):
                         self.hazards.append("Threading detected. Lock verification required.")
             return self.hazards
-        except:
+        except Exception:
             return []
 
 class SystemsPipelineEngine:
@@ -132,16 +132,16 @@ class SystemsPipelineEngine:
         prompt = f"""
         Systems Engineering Directive: Act as an expert Software Architect.
         Project Intent: {intent}
-        
+
         Phase 1 (Topology Only): Provide a JSON object representing the file structure.
         Keys are file paths, Values are high-level functional requirements.
-        
+
         Example:
         {{
             "main.py": "Entry point that coordinates logic",
             "utils/cleaner.py": "Regex engine for log scrubbing"
         }}
-        
+
         Constraint: Return ONLY valid JSON.
         """
         response = self.ping_llm(prompt)
@@ -151,7 +151,7 @@ class SystemsPipelineEngine:
                 self.topology = json.loads(json_match.group())
                 self.log(f"Topology Dispersed: {len(self.topology)} logic atoms mapped.", "DNA")
                 return True
-        except:
+        except Exception:
             self.log("Topology Generation Failed.", "FATAL")
         return False
 
@@ -161,14 +161,14 @@ class SystemsPipelineEngine:
             self.log(f"Evolving Page: {file_path}", "GENETIC")
             full_path = Path(target_folder) / file_path
             full_path.parent.mkdir(parents=True, exist_ok=True)
-            
+
             winner = False
             attempts = 0
             while not winner and attempts < 10:
                 self.log(f"  > Gen {attempts+1}...", "MUTATION")
                 prompt = f"Develop {file_path}. Requirements: {requirements}. Project Context: {intent}\nShared Logic:\n{self.context_buffer}\nReturn ONLY code."
                 code = self.extract_code(self.ping_llm(prompt))
-                
+
                 # Check Race Conditions
                 hazards = self.race_scanner.analyze_concurrency(code)
                 if hazards:
@@ -178,7 +178,7 @@ class SystemsPipelineEngine:
 
                 with open(full_path, "w", encoding="utf-8") as f:
                     f.write(code)
-                
+
                 # Darwinian Selection
                 fitness = self.darwin.evaluate(full_path)
                 if fitness >= 100:
@@ -188,7 +188,7 @@ class SystemsPipelineEngine:
                     winner = True
                 else:
                     attempts += 1
-            
+
             if not winner:
                 self.log(f"Failed to evolve {file_path} after 10 generations.", "ABORT")
                 return False
@@ -205,10 +205,10 @@ class SystemsPipelineEngine:
             subindent = ' ' * 4 * (level + 1)
             for f in files:
                 if '.git' not in root: tree.append(f"{subindent}{f}")
-        
+
         ascii_map = "\n".join(tree)
         readme_path = Path(target_folder) / "README.md"
-        
+
         readme_content = f"""# {os.path.basename(target_folder)}
 ## Architectural Overview
 This system was autonomously evolved based on the seed axiom:
@@ -226,9 +226,9 @@ Every module has been verified via Shannon Entropy scanning, Concurrency Race Co
 """
         for file, req in self.topology.items():
             readme_content += f"- **{file}**: {req}\n"
-            
+
         readme_content += "\n---\n*Verified by Darwinian Systems Engine v9.0*"
-        
+
         with open(readme_path, "w", encoding="utf-8") as f:
             f.write(readme_content)
 
@@ -254,7 +254,7 @@ Every module has been verified via Shannon Entropy scanning, Concurrency Race Co
         folder_name = re.sub(r'[^a-zA-Z0-9]', '_', intent[:30]).strip('_')
         target_folder = self.build_lab / folder_name
         target_folder.mkdir(parents=True, exist_ok=True)
-        
+
         if self.generate_topology(intent):
             if self.run_evolution_loop(target_folder, intent):
                 self.generate_documentation(target_folder, intent)

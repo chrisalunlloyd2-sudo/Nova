@@ -38,7 +38,7 @@ def sanitize_file(file_path):
 
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
-            
+
         print("Sanitization complete.")
     except UnicodeDecodeError:
         print("Warning: File appears to be binary or non-UTF8. Skipping sanitization.")
@@ -49,14 +49,14 @@ def git_push():
     try:
         print("Adding to git...")
         subprocess.run([r"C:\Users\viper\git\cmd\git.exe", "add", "."], check=True)
-        
+
         print("Committing to git...")
         status = subprocess.run([r"C:\Users\viper\git\cmd\git.exe", "status", "--porcelain"], capture_output=True, text=True)
         if status.stdout.strip():
             subprocess.run([r"C:\Users\viper\git\cmd\git.exe", "commit", "-m", "Auto-update from Python"], check=True)
         else:
             print("No changes to commit.")
-            
+
         print("Pushing to remote...")
         subprocess.run([r"C:\Users\viper\git\cmd\git.exe", "push", "origin", "main"], check=True)
         print("Git push complete.")
@@ -67,13 +67,13 @@ def git_push():
 
 if __name__ == "__main__":
     os.makedirs(os.path.dirname(DEST_PATH), exist_ok=True)
-    
+
     # 1. Transfer the file
     transfer_file()
-    
+
     # 2. Sanitize the newly transferred file
     if os.path.exists(DEST_PATH):
         sanitize_file(DEST_PATH)
-    
+
     # 3. Push to git
     git_push()

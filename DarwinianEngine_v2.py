@@ -78,7 +78,7 @@ class DarwinBridge:
         env = os.environ.copy()
         env["NODE_PATH"] = self.node_modules
         try:
-            res = subprocess.run(["node", self.bridge_path, "evaluate", str(code_path)], 
+            res = subprocess.run(["node", self.bridge_path, "evaluate", str(code_path)],
                                  env=env, capture_output=True, text=True)
             if res.returncode == 0:
                 return json.loads(res.stdout).get("fitness", 0)
@@ -135,37 +135,37 @@ class SystemsPipelineEngine:
 
     def run_evolution_loop(self, target_folder, project_intent):
         self.log(f"Initiating Darwinian Handshake: {project_intent}", "HPC")
-        
+
         # In a real run, this would be derived from the AI Topology
         topology = ["main.py", "logic.py"]
-        
+
         for page in topology:
             self.log(f"Evolving Page: {page}", "GENETIC")
             variants = []
-            
+
             for i in range(2): # Quick test loop
                 self.log(f"  > Creating Variant {i+1}...", "MUTATION")
                 prompt = f"Develop {page} logic for {project_intent}. Context: Recursive file automation. Return ONLY code."
                 code = self.ping_llm(prompt)
-                
+
                 # Race Condition Analytic
                 hazards = self.race_scanner.analyze_concurrency(code)
                 if hazards: self.log(f"  > [PURPLE FLAG] {len(hazards)} hazards identified.", "RACE")
-                
+
                 temp_path = self.build_lab / f"temp_{page}_{i}.py"
                 with open(temp_path, "w", encoding="utf-8") as f:
                     f.write(code)
-                
+
                 fitness = self.darwin.evaluate(temp_path)
                 variants.append({"code": code, "fitness": fitness})
 
             winner = max(variants, key=lambda x: x['fitness'])
             self.log(f"Winner Locked (Fitness: {winner['fitness']})", "WINNER")
-            
+
             # Commit to SHA-256 Ledger
             h = self.ledger.commit_to_ledger(winner['code'], {"page": page}, winner['fitness'])
             self.log(f"Fingerprint: {h[:16]}...", "LEDGER")
-            
+
             with open(os.path.join(target_folder, page), "w", encoding="utf-8") as f:
                 f.write(winner['code'])
 
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         res = subprocess.run([r"C:\Users\viper\AppData\Local\Programs\Ollama\ollama.exe", "list"], capture_output=True, text=True)
         model = "h2o-danube3:4b" if "h2o-danube3" in res.stdout else "qwen2.5:0.5b"
-        
+
         engine = SystemsPipelineEngine(model=model)
         engine.run_evolution_loop(sys.argv[1], "A recursive evolutionary project manager")
     else:

@@ -40,7 +40,7 @@ class DarwinianEngine:
         self.log(f"Auditing Live Repository: {project_name}...", "RED_TEAM")
         env = os.environ.copy()
         env["PATH"] = r"C:\Users\viper\git\cmd;" + env["PATH"]
-        
+
         # Scan the public repo metadata
         res = subprocess.run([self.gh_exe, "repo", "view", project_name, "--json", "description,topics"], capture_output=True, env=env)
         return res.returncode == 0
@@ -63,22 +63,22 @@ class DarwinianEngine:
     def run_final_handover(self, target_folder):
         try:
             folder_name = os.path.basename(target_folder)
-            
+
             # 1. Hash Check
             h = self.calculate_project_hash(target_folder)
             self.log(f"Project Fingerprint: {h[:16]}...", "HASH")
-            
+
             # 2. Red Team Audit
             if self.red_team_audit(folder_name):
                 self.log("Public Metadata Verified.", "PASS")
-            
+
             # 3. Final Reflections
             self.log("Refining Evolutionary Memory for next Seed...", "MEM")
-            
+
             # 4. Handover
             self.generate_build_certificate()
             self.log("SYSTEM ENTERING DORMANT STANDBY.", "DONE")
-            
+
         except Exception as e:
             self.log(f"Handover Error: {e}", "FATAL")
 
