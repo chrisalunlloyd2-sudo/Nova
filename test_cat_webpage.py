@@ -8,11 +8,11 @@ def test_cat_webpage():
     target = os.path.join(os.getcwd(), "CatWebpageTest")
     intent = "A full fake webpage about cats, autopopulate with cat facts and placeholder images."
     topology = ["index.html", "style.css", "script.js"]
-    
+
     print("================================================")
     print("   TESTING PHASE 21: RE-INJECTION & HTML/CSS    ")
     print("================================================")
-    
+
     engine.get_program_out(target, intent, topology)
 
 if __name__ == "__main__":

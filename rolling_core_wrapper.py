@@ -20,7 +20,7 @@ def main():
         sys.exit(1)
 
     target_path = sys.argv[1]
-    
+
     # Initialize and execute the full verified 100-step pipeline
     pipeline = SystemsPipeline()
     pipeline.run_full_pipeline(target_path)
