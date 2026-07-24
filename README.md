@@ -2,7 +2,7 @@
 
 > Nova — part of the Viper RAID-0 workstation system.
 
-*Auto-generated 2026-06-30 13:37 from source — branch `main`, 15 Python modules, 24 other files.*
+*Auto-generated 2026-07-23 23:21 from source — branch `main`, 15 Python modules, 24 other files.*
 
 ## Architecture
 
@@ -159,11 +159,12 @@ Executable entry points (have a `__main__` block):
 ## Status
 
 - Branch: `main`
-- Last commit: 2026-06-29 19:42:35 -0600
+- Last commit: 2026-06-30 14:08:09 -0600
 - File types: .md ×13, .ps1 ×3, .txt ×2, .spec ×1, .bat ×1, .json ×1, .html ×1, .js ×1
 
 ### Recent commits
 ```
+22e0216 [Moe autonomous] Nova 2026-06-30 14:08
 75a6b5b [Moe autonomous] Nova 2026-06-29 19:42
 4e3c98b [Moe autonomous] Nova 2026-06-29 01:13
 3b464af [Moe autonomous] Nova 2026-06-27 10:31
@@ -171,7 +172,6 @@ f344743 [Moe autonomous] Nova 2026-06-26 15:27
 92e9c61 [Moe autonomous] Nova 2026-06-20 13:23
 a0532de [Moe autonomous] Nova 2026-06-20 12:27
 ef8383a docs(Nova): autonomous update â€” 1 file(s)
-ae1c2e5 docs(Nova): autonomous update â€” 1 file(s)
 ```
 
 ---
