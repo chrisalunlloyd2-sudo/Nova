@@ -1,178 +1,59 @@
-# Nova
+﻿# Nova
 
-> Nova — part of the Viper RAID-0 workstation system.
+> Python Application | Branch: `main` | Commit: `35f3eb0`
 
-*Auto-generated 2026-07-23 23:21 from source — branch `main`, 15 Python modules, 24 other files.*
+## Overview
 
-## Architecture
+Nova is a Viper Project component.
+
+## Quick Start
 
 ```
-  .director_payload.md
-  .gitignore
-  BEST_PROMPT.txt
-  BUILD.txt
-  Blueprint.md
-  CHANGELOG.md
-  DRAG_FOLDER_HERE_v2.bat
-  DarwinEngine_Core.py
-  DarwinianEngine_v2.py
-  DarwinianEngine_v8.py
-  GEMINI.md
-  INSTALL.md
-  CatWebpageTest/
-    index.html
-    script.js
-    style.css
-  E2E_Test_Deploy_6172/
-  MultiPage_E2E_20010/
-  openrouter_manager/
-    CHANGELOG.md
-    README.md
-    ROADMAP.md
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
 ```
 
-## Dependencies
+## Project Structure
 
-External packages imported by this project:
-
-`pipeline`, `requests`, `webbrowser`, `yaml`
-
-## How to run
-
-Executable entry points (have a `__main__` block):
-
-- `python DarwinEngine_Core.py`
-- `python DarwinianEngine_v2.py`
-- `python DarwinianEngine_v8.py`
-- `python auto_port.py`
-- `python darwin_cli.py`
-- `python main.py`
-- `python pipeline_final.py`
-- `python pipeline_v9.py`
-- `python prompt_evolver.py`
-- `python rolling_core_wrapper.py`
-- `python test_cat_webpage.py`
-- `python test_e2e_deploy.py`
-
-## Modules
-
-### `DarwinEngine_Core.py`
-
-- **class `DarwinianEngine`**
-  - methods: `log`, `calculate_project_hash`, `red_team_audit`, `generate_build_certificate`, `run_final_handover`
-
-### `DarwinianEngine_v2.py`
-
-- **class `CodeLedger`**
-  - methods: `_init_ledger`, `commit_to_ledger`
-- **class `RaceAnalytic`**
-  - methods: `analyze_concurrency`
-- **class `DarwinBridge`**
-  - methods: `evaluate`
-- **class `SystemsPipelineEngine`**
-  - methods: `log`, `ping_llm`, `push_to_github`, `run_evolution_loop`
-
-### `DarwinianEngine_v8.py`
-
-- **class `CodeLedger`**
-  - methods: `_init_ledger`, `commit_to_ledger`
-- **class `DarwinBridge`**
-  - methods: `evaluate`, `mutate_scientific`
-- **class `SystemsPipelineEngine`**
-  - methods: `get_best_prompt`, `log`, `run_fitness_test`, `ping_llm`, `extract_code`, `is_page_complete`, `run_scientific_evolution`, `deploy`, `get_program_out`
-
-### `auto_port.py`
-
-- `transfer_file()`
-- `sanitize_file(file_path)`
-- `git_push()`
-
-### `darwin_cli.py`
-
-- `main()`
-
-### `logic_engine.py`
-
-- **class `RecursiveSolver`**
-  - methods: `solve`, `verify`, `self_correct`
-
-### `main.py`
-
-- `main()`
-
-### `pipeline_final.py`
-
-- **class `SystemsPipeline`**
-  - methods: `_init_db`, `_load_config`, `log_event`, `sync_environment`, `map_dependencies`, `read_file_safe`, `scrub_file`, `purge_logs`, `run_scrub_pipeline`
-
-### `pipeline_v9.py`
-
-- **class `CodeLedger`**
-  - methods: `_init_ledger`, `commit_to_ledger`
-- **class `DarwinBridge`**
-  - methods: `evaluate`, `mutate_scientific`
-- **class `RaceAnalytic`**
-  - methods: `analyze_concurrency`
-- **class `SystemsPipelineEngine`**
-  - methods: `log`, `ping_llm`, `extract_code`, `generate_topology`, `run_evolution_loop`, `generate_documentation`, `ship_to_github`, `launch_end_to_end`
-
-### `prompt_evolver.py`
-
-- **class `PromptEvolver`**
-  - methods: `log`, `ping_llm`, `mutate_prompt`, `measure_fitness`, `evolve`
-
-### `rolling_core_wrapper.py`
-
-- `main()`
-
-### `test_cat_webpage.py`
-
-- `test_cat_webpage()`
-
-### `test_e2e_deploy.py`
-
-- `test_randomized_e2e()`
-
-### `test_flappy_bird.py`
-
-- `test_flappy_bird()`
-
-### `test_multipage_e2e.py`
-
-- `test_multipage_e2e()`
-
-## Public API index
-
-| Module | Function | Signature |
-|--------|----------|-----------|
-| `auto_port` | `git_push` | `git_push()` |
-| `auto_port` | `sanitize_file` | `sanitize_file(file_path)` |
-| `auto_port` | `transfer_file` | `transfer_file()` |
-| `darwin_cli` | `main` | `main()` |
-| `main` | `main` | `main()` |
-| `rolling_core_wrapper` | `main` | `main()` |
-| `test_cat_webpage` | `test_cat_webpage` | `test_cat_webpage()` |
-| `test_e2e_deploy` | `test_randomized_e2e` | `test_randomized_e2e()` |
-| `test_flappy_bird` | `test_flappy_bird` | `test_flappy_bird()` |
-| `test_multipage_e2e` | `test_multipage_e2e` | `test_multipage_e2e()` |
-
-## Status
-
-- Branch: `main`
-- Last commit: 2026-06-30 14:08:09 -0600
-- File types: .md ×13, .ps1 ×3, .txt ×2, .spec ×1, .bat ×1, .json ×1, .html ×1, .js ×1
-
-### Recent commits
 ```
-22e0216 [Moe autonomous] Nova 2026-06-30 14:08
-75a6b5b [Moe autonomous] Nova 2026-06-29 19:42
-4e3c98b [Moe autonomous] Nova 2026-06-29 01:13
-3b464af [Moe autonomous] Nova 2026-06-27 10:31
-f344743 [Moe autonomous] Nova 2026-06-26 15:27
-92e9c61 [Moe autonomous] Nova 2026-06-20 13:23
-a0532de [Moe autonomous] Nova 2026-06-20 12:27
-ef8383a docs(Nova): autonomous update â€” 1 file(s)
+auto_port.py
+BEST_PROMPT.txt
+Blueprint.md
+BUILD.txt
+CHANGELOG.md
+DarwinEngine_Core.py
+DarwinianEngine_v2.py
+DarwinianEngine_v8.py
+darwin_cli.py
+darwin_cli.spec
+DRAG_FOLDER_HERE_v2.bat
+GEMINI.md
+INSTALL.md
+logic_engine.py
+main.py
+NOTES.md
+pipeline_final.py
+pipeline_v9.py
+ProjectSetupDrop.ps1
+PROJECT_LOG.md
+
 ```
+
+## Recent Changes
+
+- [Moe autonomous] Nova 2026-07-23 23:55 (2026-07-23)
+- [Moe autonomous] Nova 2026-06-30 14:08 (2026-06-30)
+- [Moe autonomous] Nova 2026-06-29 19:42 (2026-06-29)
+- [Moe autonomous] Nova 2026-06-29 01:13 (2026-06-29)
+- [Moe autonomous] Nova 2026-06-27 10:31 (2026-06-27)
+
+## Documentation
+
+- [CHANGELOG](CHANGELOG.md)
+- [ROADMAP](ROADMAP.md)
+- [TASKS](TASKS.md)
 
 ---
-*README generated by `readme_generator.py` (Viper). Deterministic — derived from source, not LLM prose.*
+*Auto-generated by Viper auto-docs @ 2026-08-03 12:03*
