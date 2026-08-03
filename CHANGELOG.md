@@ -2,6 +2,9 @@
 
 All notable changes to this project.
 
+## 2026-08
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
+
 ## 2026-07
 - **[Changed]** [Moe autonomous] Nova 2026-07-23 23:55 ($hash)
 
