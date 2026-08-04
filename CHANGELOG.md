@@ -3,6 +3,8 @@
 All notable changes to this project.
 
 ## 2026-08
+- **[Changed]** [Moe autonomous] Nova 2026-08-03 21:47 ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
@@ -57,6 +59,4 @@ All notable changes to this project.
 - **[Changed]** Auto-setup: Generated docs and project files ($hash)
 - **[Changed]** Auto-setup: Generated docs and project files ($hash)
 - **[Changed]** Auto-setup: Generated docs and project files ($hash)
-- **[Changed]** Auto-setup: Generated docs and project files ($hash)
-- **[Changed]** Add drag-and-drop Bootstrapper app ($hash)
 
