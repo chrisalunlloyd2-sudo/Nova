@@ -3,6 +3,8 @@
 All notable changes to this project.
 
 ## 2026-08
+- **[Changed]** [Moe autonomous] Nova 2026-08-04 01:09 ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-03 23:55 ($hash)
@@ -55,8 +57,4 @@ All notable changes to this project.
 - **[Docs]** docs(Nova): autonomous update ΓÇö 1 file(s) ($hash)
 - **[Docs]** docs(Nova): autonomous update ΓÇö 1 file(s) ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-06-19 20:57 ($hash)
-
-## 2026-05
-- **[Changed]** Enterprise: Automated Project Sync ($hash)
-- **[Changed]** Initial commit ($hash)
 
