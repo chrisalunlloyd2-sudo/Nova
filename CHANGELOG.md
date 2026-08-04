@@ -3,6 +3,8 @@
 All notable changes to this project.
 
 ## 2026-08
+- **[Changed]** [Moe autonomous] Nova 2026-08-03 23:55 ($hash)
+- **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-03 22:52 ($hash)
 - **[Docs]** docs: auto-update [skip-docs] ($hash)
@@ -57,6 +59,4 @@ All notable changes to this project.
 - **[Changed]** Initial commit ($hash)
 - **[Changed]** System v26.0: Final Documentation & Executable Shipment ($hash)
 - **[Changed]** FINAL POLISH: v10.1 Master Engine + SYSTEM BIBLE ($hash)
-- **[Changed]** LUNAR LANDING: Final v10.0 Project Foundry Baseline ($hash)
-- **[Changed]** Auto-setup: Generated docs and project files ($hash)
 
