@@ -3,6 +3,7 @@ import os
 from logic_engine import RecursiveSolver
 
 def main():
+    """Main (function)."""
     print("================================================")
     print("   DARWINIAN SELF-CORRECTING MATH SOLVER v1.0   ")
     print("================================================")
