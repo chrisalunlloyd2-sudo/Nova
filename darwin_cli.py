@@ -12,6 +12,7 @@ except ImportError as e:
     sys.exit(1)
 
 def main():
+    """Main (function)."""
     parser = argparse.ArgumentParser(description="Darwinian Evolutionary Engine CLI Hook")
     parser.add_argument("--target", required=True, help="Target folder for the generated project")
     parser.add_argument("--intent", required=True, help="Description/Intent of the project to generate")
