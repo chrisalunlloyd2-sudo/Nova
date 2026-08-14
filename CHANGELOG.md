@@ -3,6 +3,7 @@
 All notable changes to this project.
 
 ## 2026-08
+- **[Changed]** [Moe autonomous] Nova 2026-08-14 08:55 ($hash)
 - **[Docs]** docs: document 1 public API in main.py (autonomous, logic-verified) ($hash)
 - **[Docs]** docs: document 1 public API in darwin_cli.py (autonomous, logic-verified) ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-14 04:09 ($hash)
@@ -52,5 +53,4 @@ All notable changes to this project.
 - **[Changed]** [Moe autonomous] Nova 2026-08-12 14:39 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-12 13:50 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-12 12:48 ($hash)
-- **[Changed]** [Moe autonomous] Nova 2026-08-12 11:56 ($hash)
 
