@@ -3,6 +3,7 @@
 All notable changes to this project.
 
 ## 2026-08
+- **[Changed]** [Moe autonomous] Nova 2026-08-14 16:58 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-14 16:17 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-14 15:21 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-14 13:10 ($hash)
@@ -52,5 +53,4 @@ All notable changes to this project.
 - **[Changed]** [Moe autonomous] Nova 2026-08-12 19:36 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-12 18:37 ($hash)
 - **[Changed]** [Moe autonomous] Nova 2026-08-12 17:44 ($hash)
-- **[Changed]** [Moe autonomous] Nova 2026-08-12 16:38 ($hash)
 
